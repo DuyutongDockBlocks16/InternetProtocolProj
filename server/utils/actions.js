@@ -12,6 +12,8 @@ const ACTIONS = {
 	ONLINE: "online",
 	SEND_MESSAGE: "send-message",
 	RECEIVE_MESSAGE: "receive-message",
+	TEXT: "text",
+	EDITING: "editing",
 }
 
 module.exports = ACTIONS
