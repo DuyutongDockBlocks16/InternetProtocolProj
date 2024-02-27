@@ -20,12 +20,6 @@ const io = new Server(server, {
 
 const userSocketMap = {}
 
-// 从另一个项目移植的代码
-// const users = new Set();
-let existingText = ''
-let editingUser = '';
-// 从另一个项目移植的代码
-
 
 function getAllConnectedClient(roomId) {
 	return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(
@@ -64,12 +58,6 @@ io.on("connection", (socket) => {
 					socketId: socket.id,
 				})
 			})
-
-			// if (editingUser === socket.id) {
-			// 	editingUser = '';
-			// 	io.emit('editing', '');
-			// }
-			// io.emit('users', Array.from(users));
 
 		})
 
@@ -119,26 +107,6 @@ io.on("connection", (socket) => {
 	socket.on(ACTIONS.SEND_MESSAGE, ({ roomId, message }) => {
 		socket.broadcast.to(roomId).emit(ACTIONS.RECEIVE_MESSAGE, { message })
 	})
-
-	// 从另一个项目移植的代码
-	// users.add(userSocketMap[socket.id]?.username);
-	// socket.emit('connectUser', socket.id);
-	// socket.emit('text', existingText);
-	// io.emit('users', Array.from(users));
-
-	socket.on(ACTIONS.TEXT, ({roomId, newText}) => {
-		existingText = newText;
-		socket.broadcast.to(roomId).emit(ACTIONS.TEXT,{newText})
-		// io.emit('text', newText);
-	});
-
-	socket.on(ACTIONS.EDITING, ({roomId, userId}) => {
-		editingUser = userId
-		// io.emit('editing', userId)
-		socket.broadcast.to(roomId).emit(ACTIONS.EDITING,{userId})
-	})
-	// 从另一个项目移植的代码
-
 
 })
 
