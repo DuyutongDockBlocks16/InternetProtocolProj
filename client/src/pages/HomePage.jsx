@@ -1,5 +1,6 @@
 import illustration from "../assets/illustration.svg"
 import FormComponent from "../components/forms/FormComponent"
+import  DelayDisplay  from '../components/latency/Latency';
 // import Footer from "../components/common/Footer";
 
 function HomePage() {
@@ -15,7 +16,13 @@ function HomePage() {
                 </div>
                 <FormComponent />
             </div>
-            {/* <Footer /> */}
+                {/* <Footer /> */}
+            <div>
+                Author: Du Yutong, Lai Minfei, Han Huazhi
+            </div>
+            <div className="flex gap-20">
+                <DelayDisplay url="http://82.130.47.176:80"/>
+            </div>
         </div>
     )
 }
