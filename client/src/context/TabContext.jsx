@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import { createContext, useState } from "react"
-import { HiOutlineUsers } from "react-icons/hi2"
+import { HiOutlineUsers, HiOutlineUserCircle } from "react-icons/hi2"
 import { IoSettingsOutline } from "react-icons/io5"
 import { PiChats } from "react-icons/pi"
 import { VscFiles } from "react-icons/vsc"
@@ -22,10 +22,14 @@ function TabContextProvider({ children }) {
         [TABS.Chat]: <ChatPanel />,
     })
     const tabIcons = {
-        [TABS.FILES]: <VscFiles size={30} />,
-        [TABS.USERS]: <HiOutlineUsers size={30} />,
-        [TABS.SETTINGS]: <IoSettingsOutline size={30} />,
-        [TABS.Chat]: <PiChats size={32} />,
+        // [TABS.FILES]: <VscFiles size={30} />,
+        [TABS.FILES]: "Shared Documents",
+        // [TABS.USERS]: <HiOutlineUserCircle size={30} />,
+        [TABS.USERS]: "Users",
+        // [TABS.SETTINGS]: <IoSettingsOutline size={30} />,
+        [TABS.SETTINGS]: "Settings",
+        // [TABS.Chat]: <PiChats size={32} />,
+        [TABS.Chat]: "Chats",
     }
 
     return (

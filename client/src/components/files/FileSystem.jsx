@@ -70,7 +70,7 @@ function FileSystem() {
                     return editingFileId !== file.id ? (
                         <div
                             className={
-                                "mb-2 flex rounded-md px-4 py-2 hover:bg-darkHover " +
+                                "mb-2 flex px-4 py-2 bg-emerald-700 " +
                                 fileSelectedClass(file.id)
                             }
                             key={file.id}

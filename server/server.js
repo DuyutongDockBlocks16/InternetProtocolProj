@@ -20,7 +20,6 @@ const io = new Server(server, {
 
 const userSocketMap = {}
 
-
 function getAllConnectedClient(roomId) {
 	return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(
 		(socketId) => {
@@ -58,7 +57,6 @@ io.on("connection", (socket) => {
 					socketId: socket.id,
 				})
 			})
-
 		})
 
 		delete userSocketMap[socket.id]
@@ -107,7 +105,6 @@ io.on("connection", (socket) => {
 	socket.on(ACTIONS.SEND_MESSAGE, ({ roomId, message }) => {
 		socket.broadcast.to(roomId).emit(ACTIONS.RECEIVE_MESSAGE, { message })
 	})
-
 })
 
 const PORT = process.env.PORT || 3000

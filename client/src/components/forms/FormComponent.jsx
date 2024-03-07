@@ -56,38 +56,40 @@ function FormComponent() {
     }, [location.state?.roomId, usernameInContext])
 
     return (
-        <div className="flex w-full max-w-[500px] flex-col items-center justify-center gap-4 p-4 sm:w-[500px] sm:p-8">
-            <h1 className="mb-4 text-3xl md:mb-8 md:text-5xl">Code Sync</h1>
-            <h4 className="self-start text-base font-bold">
-                Paste Invitation ROOM Id
-            </h4>
-            <form onSubmit={joinRoom} className="flex w-full flex-col gap-4">
+        <div className="flex w-full max-w-[1000px] flex-col items-center justify-center gap-4 p-4 sm:w-11/12 sm:p-8">
+            <h1 className="mb-4 text-3xl md:mb-8 md:text-6xl text-emerald-700">Colaboration Tool</h1>
+            <div className="text-right w-full h-full">
+            <h4 className="text-base font-bold text-emerald-500">
+                Welcome to use the Colaboration Tool ver.1
+                </h4>
+            </div>
+            <form onSubmit={joinRoom} className="flex w-full flex-col gap-4 text-emerald-700">
                 <input
                     type="text"
                     name="roomId"
-                    placeholder="ROOM Id"
-                    className="w-full rounded-lg border-none px-3 py-2 text-black focus:outline-none"
+                    placeholder="Type in your room ID"
+                    className="w-full border-none px-3 py-2 text-emerald-700 focus:outline-none shadow-md"
                     onChange={(e) => setRoomId(e.target.value)}
                     value={roomId}
                 />
                 <input
                     type="text"
                     name="username"
-                    placeholder="USERNAME"
-                    className="w-full rounded-lg border-none px-3 py-2 text-black focus:outline-none"
+                    placeholder="Type in your username"
+                    className="w-full border-none px-3 py-2 text-emerald-700 focus:outline-none shadow-md"
                     onChange={(e) => setUsername(e.target.value)}
                     value={username}
                 />
                 <button
                     type="submit"
-                    className="self-end rounded-lg bg-primary px-8 py-2 text-black"
+                    className="self-end bg-primary px-8 py-2 text-emerald-700 hover:bg-emerald-800 hover:text-emerald-500 shadow-lg rounded-lg transform hover:scale-105 transition duration-150 ease-in-out"
                     onClick={joinRoom}
                 >
                     Join
                 </button>
             </form>
-            <p className="select-none self-start">
-                {"If you don't have an invite then create"}{" "}
+            <p className="select-none justify-center">
+                {"Click here to create a new room, "}{" "}
                 <span
                     className="cursor-pointer text-primary underline"
                     onClick={createNewRoomId}

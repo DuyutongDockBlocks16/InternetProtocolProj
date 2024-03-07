@@ -11,7 +11,7 @@ const ACTIONS = {
 	OFFLINE: "offline",
 	ONLINE: "online",
 	SEND_MESSAGE: "send-message",
-	RECEIVE_MESSAGE: "receive-message"
+	RECEIVE_MESSAGE: "receive-message",
 }
 
 module.exports = ACTIONS
