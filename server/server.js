@@ -1,22 +1,29 @@
-const express = require("express")
-const app = express()
-require("dotenv").config()
-const http = require("http")
-const cors = require("cors")
-const ACTIONS = require("./utils/actions")
+const express = require("express");
+const app = express();
+require("dotenv").config();
+const https = require("https");
+const fs = require("fs");
+const cors = require("cors");
+const ACTIONS = require("./utils/actions");
 
-app.use(express.json())
+app.use(express.json());
+app.use(cors());
 
-app.use(cors())
+const { Server } = require("socket.io");
 
-const { Server } = require("socket.io")
+// 加载SSL/TLS证书
+const privateKey = fs.readFileSync('private.key', 'utf8');
+const certificate = fs.readFileSync('certificate.crt', 'utf8');
+// const ca = fs.readFileSync('path/to/ca_bundle.crt', 'utf8'); // 如果有的话
 
-const server = http.createServer(app)
+const credentials = { key: privateKey, cert: certificate};
+
+const server = https.createServer(credentials, app);
 const io = new Server(server, {
 	cors: {
 		origin: "*",
 	},
-})
+});
 
 const userSocketMap = {}
 
@@ -107,12 +114,12 @@ io.on("connection", (socket) => {
 	})
 })
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
 	res.send("API is running successfully")
 })
 
 server.listen(PORT, () => {
-	console.log(`Listening on port ${PORT}`)
-})
+	console.log(`Listening on HTTPS port ${PORT}`);
+});
