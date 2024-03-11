@@ -35,7 +35,7 @@ function ChatPanel() {
         <div className="tab-height flex max-h-full min-h-[500px] w-full flex-col gap-4 p-4">
             <h1 className="text-base">Group Chat</h1>
             <div
-                className="flex-grow overflow-auto rounded-md border-t-4 border-primary bg-darkHover p-2"
+                className="flex-grow overflow-auto border-t-4 border-primary bg-emerald-700 p-2"
                 ref={messagesContainerRef}
                 onScroll={handleScroll}
             >
@@ -45,14 +45,14 @@ function ChatPanel() {
                         <div
                             key={index}
                             className={
-                                "mb-2 w-[80%] self-end break-words rounded-md bg-dark px-3 py-2" +
+                                "mb-2 w-[90%] self-end break-words bg-primary px-3 py-2" +
                                 (message.socketId === socket.id
                                     ? " ml-auto "
                                     : "")
                             }
                         >
                             <div className="flex justify-between">
-                                <span className="text-xs text-primary">
+                                <span className="text-xs text-dark">
                                     {message.username}
                                 </span>
                                 <span className="text-xs text-white">

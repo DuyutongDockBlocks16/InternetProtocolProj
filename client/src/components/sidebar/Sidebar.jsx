@@ -13,11 +13,11 @@ function Sidebar() {
     return (
         <aside className="flex w-full md:h-full md:max-h-full md:min-h-full md:w-auto">
             <div
-                className="fixed bottom-0 left-0 z-50 flex h-[50px] w-full gap-6 self-end overflow-auto border-t border-primary bg-dark p-3 md:static md:h-full md:w-[50px] md:flex-col md:border-r md:border-t-0 md:p-2 md:pt-4"
+                className="fixed bottom-0 right-0 z-50 flex h-[50px] w-full gap-24 self-end overflow-auto bg-emerald-700 p-3 md:static md:h-full md:w-auto md:flex-col md:p-2 md:pt-4"
                 style={isMobileSidebarOpen ? {} : { display: "none" }}
             >
                 <TabButton tabName={TABS.FILES} icon={tabIcons[TABS.FILES]} />
-                <TabButton tabName={TABS.Chat} icon={<PiChats size={32} />} />
+                <TabButton tabName={TABS.Chat} icon={tabIcons[TABS.Chat]} />
                 <TabButton tabName={TABS.USERS} icon={tabIcons[TABS.USERS]} />
                 <TabButton
                     tabName={TABS.SETTINGS}
@@ -25,7 +25,7 @@ function Sidebar() {
                 />
             </div>
             <div
-                className="absolute left-0 top-0 z-20 w-full flex-grow flex-col bg-dark md:static md:w-[300px]"
+                className="absolute left-0 top-0 z-20 w-full flex-grow flex-col bg-emerald-600 md:static md:w-[300px]"
                 style={isSidebarOpen ? {} : { display: "none" }}
             >
                 {tabComponents[activeTab]}

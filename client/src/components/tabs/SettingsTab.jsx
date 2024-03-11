@@ -44,7 +44,7 @@ function SettingsTab() {
     }, [fontFamily])
 
     return (
-        <div className="tab-height flex flex-col items-center gap-2 p-4">
+        <div className="tab-height flex flex-col items-center gap-32 p-4">
             {/* Choose Font Family option */}
             <div className="flex w-full items-end gap-2">
                 <Select
@@ -54,20 +54,23 @@ function SettingsTab() {
                     title="Fonts"
                 />
                 {/* Choose font size option */}
-                <select
-                    value={fontSize}
-                    onChange={handleFontSizeChange}
-                    className="rounded-lg border-none bg-darkHover px-4  py-2 text-white outline-none"
-                    title="Font Size"
-                >
-                    {[...Array(13).keys()].map((size) => {
-                        return (
-                            <option key={size} value={size + 12}>
-                                {size + 12}
-                            </option>
-                        )
-                    })}
-                </select>
+            </div>
+            <div className="flex w-full items-start gap-2 flex-col">
+                Font Size
+            <select
+                value={fontSize}
+                onChange={handleFontSizeChange}
+                className="bg-emerald-700 border-none px-4 py-2 text-white outline-none"
+                title="Font Size"
+            >
+                {[...Array(13).keys()].map((size) => {
+                    return (
+                        <option key={size} value={size + 12}>
+                            {size + 12}
+                        </option>
+                    )
+                })}
+            </select>
             </div>
             {/* Choose theme option */}
             <Select
