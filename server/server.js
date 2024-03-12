@@ -3,6 +3,7 @@ const app = express();
 require("dotenv").config();
 const https = require("https");
 const fs = require("fs");
+// const http = require("http")
 const cors = require("cors");
 const ACTIONS = require("./utils/actions");
 
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 const { Server } = require("socket.io");
+// const server = http.createServer(app)
 
 // 加载SSL/TLS证书
 const privateKey = fs.readFileSync('private.key', 'utf8');
@@ -26,6 +28,8 @@ const io = new Server(server, {
 });
 
 const userSocketMap = {}
+// Mapping for storing room passwords
+const roomPasswords = {};
 
 function getAllConnectedClient(roomId) {
 	return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(
@@ -41,17 +45,33 @@ function getAllConnectedClient(roomId) {
 
 io.on("connection", (socket) => {
 	// Handle user actions
-	socket.on(ACTIONS.JOIN, ({ roomId, username }) => {
-		userSocketMap[socket.id] = { username, roomId, status: ACTIONS.ONLINE }
-		socket.join(roomId)
-		const clients = getAllConnectedClient(roomId)
-		socket.broadcast.to(roomId).emit(ACTIONS.JOINED, {
-			username,
-			socketId: socket.id,
-		})
-
-		// Send clients list to all sockets in room
-		io.to(roomId).emit(ACTIONS.UPDATE_CLIENTS_LIST, { clients })
+	socket.on(ACTIONS.JOIN, ({ roomId, username, roomPassword }) => {
+		if (!roomPasswords[roomId]) {
+			// If the room does not exist, set the password for the new room
+			console.log(`Creating new room: ${roomId}`);
+			roomPasswords[roomId] = roomPassword;
+			userSocketMap[socket.id] = { username, roomId, status: ACTIONS.ONLINE };
+			socket.join(roomId);
+		} else {
+			// Now verify that the password is correct
+			if (roomPasswords[roomId] === roomPassword) {
+				console.log(`User ${username} joined room: ${roomId}`);
+				userSocketMap[socket.id] = { username, roomId, status: ACTIONS.ONLINE };
+				socket.join(roomId);
+				const clients = getAllConnectedClient(roomId);
+				socket.broadcast.to(roomId).emit(ACTIONS.JOINED, {
+					username,
+					socketId: socket.id,
+				});
+				// Send client list to all sockets in the room
+				io.to(roomId).emit(ACTIONS.UPDATE_CLIENTS_LIST, { clients });
+			} else {
+				// Sends an error message if the password is incorrect
+				console.error(`Invalid password for room: ${roomId} by user ${username}`);
+				socket.emit("room_join_error", { error: "Invalid room password" });
+				socket.disconnect();
+			}
+		}
 	})
 
 	socket.on("disconnecting", () => {
