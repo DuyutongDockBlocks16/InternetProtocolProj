@@ -9,7 +9,7 @@ function Clients() {
 
     return (
         <div className="flex min-h-[200px] flex-grow justify-center overflow-y-auto">
-            <div className="flex h-full w-full flex-wrap items-start gap-x-2 gap-y-6">
+            <div className="flex h-full w-full flex-col items-start gap-x-2 gap-y-4">
                 {clients.map((client) => {
                     return <Client key={client.socketId} client={client} />
                 })}
@@ -24,18 +24,23 @@ const Client = ({ client }) => {
 
     return (
         <div
-            className="relative flex w-[100px] flex-col items-center gap-2"
+            className="relative flex w-full flex-col items-start gap-2"
             title={title}
         >
-            <Avatar name={username} size="50" round={"12px"} title={title} />
-            <p className="line-clamp-2 max-w-full text-ellipsis break-words">
-                {username}
-            </p>
+            {/* <Avatar name={username} size="50" round={"12px"} title={title} /> */}
+            {/* <p className="line-clamp-2 max-w-full text-ellipsis break-words"> */}
+            <div className="flex flex-row">
+                {username} 
+                {/* </p> */}
+                <div>
+                    &nbsp; -online
+                </div>   
             <div
                 className={`absolute right-5 top-0 h-3 w-3 rounded-full ${
                     status === ACTIONS.ONLINE ? "bg-green-500" : "bg-danger"
                 }`}
-            ></div>
+                ></div>
+            </div>
         </div>
     )
 }

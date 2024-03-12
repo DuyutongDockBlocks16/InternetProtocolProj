@@ -32,19 +32,21 @@ function ChatInput() {
     return (
         <form
             onSubmit={handleSendMessage}
-            className="flex justify-between rounded-md border border-primary"
+            className="flex justify-between border border-primary"
         >
             <input
                 type="text"
-                className="w-full flex-grow rounded-md border-none bg-dark p-2 outline-none"
-                placeholder="Enter a message..."
+                className="w-full flex-grow border-none bg-dark p-2 outline-none"
+                placeholder="What do you want to say?"
                 ref={inputRef}
             />
             <button
-                className="flex items-center justify-center rounded-r-md bg-primary p-2 text-dark"
+                className="flex items-center justify-center bg-primary p-2 text-dark"
                 type="submit"
+                
             >
-                <IoSend size={24} />
+                Send
+                {/* <IoSend size={24} /> */}
             </button>
         </form>
     )

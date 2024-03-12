@@ -41,19 +41,19 @@ function FilesTab() {
         <div className="tab-height flex select-none flex-col gap-1 p-4">
             <FileSystem />
             <button
-                className="flex w-full justify-start rounded-md py-2 transition-all hover:bg-darkHover hover:px-4"
+                className="flex w-full justify-start py-2 transition-all hover:bg-darkHover hover:px-4"
                 onClick={handleOpenFile}
             >
                 Open File
             </button>
             <button
-                className="flex w-full justify-start rounded-md py-2 transition-all hover:bg-darkHover hover:px-4"
+                className="flex w-full justify-start py-2 transition-all hover:bg-darkHover hover:px-4"
                 onClick={downloadCurrentFile}
             >
                 Download File
             </button>
             <button
-                className="flex w-full justify-start rounded-md py-2 transition-all hover:bg-darkHover hover:px-4"
+                className="flex w-full justify-start py-2 transition-all hover:bg-darkHover hover:px-4"
                 onClick={downloadAllFiles}
             >
                 Download All Files
