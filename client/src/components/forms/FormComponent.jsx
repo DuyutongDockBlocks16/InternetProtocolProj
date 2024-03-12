@@ -8,12 +8,15 @@ function FormComponent() {
     const navigate = useNavigate()
     const location = useLocation()
     const [roomId, setRoomId] = useState("")
+    const [roomPassword, setRoomPassword] = useState("");
     const [username, setUsername] = useState("")
     const {
         setRoomId: setRoomIdToContext,
         setUsername: setUsernameToContext,
         username: usernameInContext,
     } = useContext(AppContext)
+    const { joinError, setJoinError } = useContext(AppContext); // Getting state and methods from AppContext
+    const [isJoining, setIsJoining] = useState(false);
 
     const createNewRoomId = () => {
         setRoomId(uuidv4())
@@ -23,9 +26,8 @@ function FormComponent() {
     const joinRoom = (e) => {
         e.preventDefault()
 
-        if (!roomId || !username) {
-            toast.error("ROOM Id & username is required")
-
+        if (!roomId || !username || !roomPassword) {
+            toast.error("ROOM Id, username, and room password are required")
             return
         } else if (roomId.length < 5) {
             toast.error("ROOM Id must be at least 5 characters long")
@@ -39,9 +41,13 @@ function FormComponent() {
         setRoomIdToContext(roomId)
         setUsernameToContext(username)
 
+        setIsJoining(true);
+        // set joinError to false each time we try to join a room in order to clear the previous error state
+        setJoinError(false);
         navigate(`/editor/${roomId}`, {
             state: {
                 username,
+                roomPassword,
             },
         })
     }
@@ -54,6 +60,12 @@ function FormComponent() {
             }
         }
     }, [location.state?.roomId, usernameInContext])
+
+    useEffect(() => {
+        if (joinError) {
+            setIsJoining(false);
+        }
+    }, [joinError]);
 
     return (
         <div className="flex w-full max-w-[1000px] flex-col items-center justify-center gap-4 p-4 sm:w-11/12 sm:p-8">
@@ -71,6 +83,14 @@ function FormComponent() {
                     className="w-full border-none px-3 py-2 text-emerald-700 focus:outline-none shadow-md"
                     onChange={(e) => setRoomId(e.target.value)}
                     value={roomId}
+                />
+                <input
+                    type="password"
+                    name="roomPassword"
+                    placeholder="Room Password"
+                    className="w-full rounded-lg border-none px-3 py-2 text-black focus:outline-none"
+                    onChange={(e) => setRoomPassword(e.target.value)}
+                    value={roomPassword}
                 />
                 <input
                     type="text"

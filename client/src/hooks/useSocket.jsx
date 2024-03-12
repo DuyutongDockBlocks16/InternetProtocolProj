@@ -13,7 +13,9 @@ function useSocket() {
         useContext(AppContext)
     const [isLoading, setIsLoading] = useState(true)
     const [isError, setIsError] = useState(false)
+    const [joinError, setJoinError] = useState(false);
     const { roomId } = useParams()
+    const roomPassword = location.state?.roomPassword || "";
 
     useEffect(() => {
         // if the user is not coming from the home page
@@ -33,37 +35,41 @@ function useSocket() {
             setIsError(true)
         }
 
-        function init() {
-            setIsLoading(true)
-            setIsError(false)
+        const init = () => {
+            setIsLoading(true);
+            setIsError(false);
 
-            if (socket == null) {
-                const s = initSocket()
-                setSocket(s)
+            if (!socket) {
+                const newSocket = initSocket(roomId, location.state?.username, roomPassword);
+                setSocket(newSocket);
+
+                newSocket.on("connect", () => setIsLoading(false));
+                newSocket.on("connect_error", handleErrs);
+                newSocket.on("connect_failed", handleErrs);
+
+                newSocket.emit(ACTIONS.JOIN, {
+                    roomId,
+                    username: location.state?.username,
+                    roomPassword,
+                });
+
+                newSocket.on(ACTIONS.UPDATE_CLIENTS_LIST, ({ clients }) => {
+                    setClients(clients);
+                });
+
+                newSocket.on('room_join_error', (error) => {
+                    toast.error('Failed to join room: ' + error.error);
+                    setJoinError(true);
+                    navigate("/");
+                });
+
+                newSocket.on(ACTIONS.DISCONNECTED, ({ username, socketId }) => {
+                    toast.success(`${username} left the room`);
+                    setClients((prev) => prev.filter((client) => client.socketId !== socketId));
+                });
+
             }
-
-            if (socket == null) return
-
-            socket.on("connect", () => setIsLoading(false))
-            socket.on("connect_error", handleErrs)
-            socket.on("connect_failed", handleErrs)
-
-            socket.emit(ACTIONS.JOIN, {
-                roomId,
-                username,
-            })
-
-            socket.on(ACTIONS.UPDATE_CLIENTS_LIST, ({ clients }) => {
-                setClients(clients)
-            })
-
-            socket.on(ACTIONS.DISCONNECTED, ({ username, socketId }) => {
-                toast.success(`${username} left the room`)
-                setClients((prev) => {
-                    return prev.filter((client) => client.socketId != socketId)
-                })
-            })
-        }
+        };
 
         init()
 
@@ -76,10 +82,11 @@ function useSocket() {
             socket.off("connect_failed")
             socket.off(ACTIONS.DISCONNECTED)
             socket.off(ACTIONS.UPDATE_CLIENTS_LIST)
+            socket.off("room_join_error");
         }
-    }, [socket, setSocket, navigate, roomId, setClients, username])
+    }, [socket, setSocket, navigate, roomId, setClients, location.state, roomPassword])
 
-    return { isLoading, isError }
+    return { isLoading, isError, joinError }
 }
 
 export default useSocket

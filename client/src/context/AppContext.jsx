@@ -17,6 +17,7 @@ function AppContextProvider({ children }) {
     const [settings, updateSettings] = useState(storedSettings)
     const [roomId, setRoomId] = useState("")
     const [username, setUsername] = useState("")
+    const [joinError, setJoinError] = useState(false);
 
     return (
         <AppContext.Provider
@@ -31,6 +32,8 @@ function AppContextProvider({ children }) {
                 setRoomId,
                 username,
                 setUsername,
+                joinError,
+                setJoinError,
             }}
         >
             {children}
