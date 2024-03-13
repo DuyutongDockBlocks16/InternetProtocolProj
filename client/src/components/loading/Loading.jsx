@@ -15,7 +15,7 @@ function Loading({ isError }) {
 
     useEffect(() => {
         if (isError) {
-            setMessage("Oops! Something went wrong. Please try again later.")
+            setMessage("Something went wrong, please refresh the page.")
         }
     }, [isError])
 
@@ -37,7 +37,7 @@ function Loading({ isError }) {
                     className="rounded-lg bg-primary px-8 py-2 text-black"
                     onClick={gotoHomePage}
                 >
-                    Go to HomePage
+                    Return
                 </button>
             )}
         </div>

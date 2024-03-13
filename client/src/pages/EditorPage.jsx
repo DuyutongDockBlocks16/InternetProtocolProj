@@ -7,7 +7,7 @@ function EditorPage() {
     useUserActivity()
 
     return (
-        <div classname="flex flex-col h-screen min-h-screen max-w-full items-center justify-center overflow-x-hidden">
+        <div>
             <div className="w-full text-start py-8 bg-green-600 text-2xl">
             &nbsp;&nbsp;&nbsp; Colaboration Tool
             </div>

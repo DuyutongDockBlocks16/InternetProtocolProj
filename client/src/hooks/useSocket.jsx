@@ -42,33 +42,35 @@ function useSocket() {
             if (!socket) {
                 const newSocket = initSocket(roomId, location.state?.username, roomPassword);
                 setSocket(newSocket);
-
-                newSocket.on("connect", () => setIsLoading(false));
-                newSocket.on("connect_error", handleErrs);
-                newSocket.on("connect_failed", handleErrs);
-
-                newSocket.emit(ACTIONS.JOIN, {
-                    roomId,
-                    username: location.state?.username,
-                    roomPassword,
-                });
-
-                newSocket.on(ACTIONS.UPDATE_CLIENTS_LIST, ({ clients }) => {
-                    setClients(clients);
-                });
-
-                newSocket.on('room_join_error', (error) => {
-                    toast.error('Failed to join room: ' + error.error);
-                    setJoinError(true);
-                    navigate("/");
-                });
-
-                newSocket.on(ACTIONS.DISCONNECTED, ({ username, socketId }) => {
-                    toast.success(`${username} left the room`);
-                    setClients((prev) => prev.filter((client) => client.socketId !== socketId));
-                });
-
             }
+            if (!socket) return
+
+            socket.on("connect", () => setIsLoading(false));
+            socket.on("connect_error", handleErrs);
+            socket.on("connect_failed", handleErrs);
+
+            socket.emit(ACTIONS.JOIN, {
+                roomId,
+                username: location.state?.username,
+                roomPassword,
+            });
+
+            socket.on(ACTIONS.UPDATE_CLIENTS_LIST, ({ clients }) => {
+                setClients(clients);
+            });
+
+            socket.on('room_join_error', (error) => {
+                toast.error('Failed to join room: ' + error.error);
+                setJoinError(true);
+                navigate("/");
+            });
+
+            socket.on(ACTIONS.DISCONNECTED, ({ username, socketId }) => {
+                toast.success(`${username} left the room`);
+                setClients((prev) => prev.filter((client) => client.socketId !== socketId));
+            });
+
+            
         };
 
         init()

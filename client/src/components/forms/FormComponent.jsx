@@ -87,8 +87,8 @@ function FormComponent() {
                 <input
                     type="password"
                     name="roomPassword"
-                    placeholder="Room Password"
-                    className="w-full rounded-lg border-none px-3 py-2 text-black focus:outline-none"
+                    placeholder="Type in your room password"
+                    className="w-full border-none px-3 py-2 text-emerald-700 focus:outline-none shadow-md"
                     onChange={(e) => setRoomPassword(e.target.value)}
                     value={roomPassword}
                 />

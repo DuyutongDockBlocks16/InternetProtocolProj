@@ -7,6 +7,9 @@ const fs = require("fs");
 const cors = require("cors");
 const ACTIONS = require("./utils/actions");
 
+//upload file
+const multer = require('multer');
+
 app.use(express.json());
 app.use(cors());
 
@@ -45,6 +48,7 @@ function getAllConnectedClient(roomId) {
 
 io.on("connection", (socket) => {
 	// Handle user actions
+	console.log(`io.on(connection) triggered`);
 	socket.on(ACTIONS.JOIN, ({ roomId, username, roomPassword }) => {
 		if (!roomPasswords[roomId]) {
 			// If the room does not exist, set the password for the new room
@@ -52,6 +56,13 @@ io.on("connection", (socket) => {
 			roomPasswords[roomId] = roomPassword;
 			userSocketMap[socket.id] = { username, roomId, status: ACTIONS.ONLINE };
 			socket.join(roomId);
+			const clients = getAllConnectedClient(roomId);
+			socket.broadcast.to(roomId).emit(ACTIONS.JOINED, {
+				username,
+				socketId: socket.id,
+			});
+			// Send client list to all sockets in the room
+			io.to(roomId).emit(ACTIONS.UPDATE_CLIENTS_LIST, { clients });
 		} else {
 			// Now verify that the password is correct
 			if (roomPasswords[roomId] === roomPassword) {
@@ -142,4 +153,22 @@ app.get("/", (req, res) => {
 
 server.listen(PORT, () => {
 	console.log(`Listening on HTTPS port ${PORT}`);
+});
+
+
+//upload file
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/') 
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now())
+	}
+});
+
+const upload = multer({ storage: storage });
+
+app.post('/upload', upload.single('file'), (req, res) => {
+    console.log('File has been uploaded');
+    res.send({ message: "File uploaded successfully." });
 });

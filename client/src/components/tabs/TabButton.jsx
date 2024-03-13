@@ -35,7 +35,7 @@ function TabButton({ tabName, icon }) {
 
 TabButton.propTypes = {
     tabName: PropTypes.string.isRequired,
-    icon: PropTypes.element.isRequired,
+    icon: PropTypes.string.isRequired,
 }
 
 export default TabButton
