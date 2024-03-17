@@ -69,10 +69,10 @@ function FormComponent() {
 
     return (
         <div className="flex w-full max-w-[1000px] flex-col items-center justify-center gap-4 p-4 sm:w-11/12 sm:p-8">
-            <h1 className="mb-4 text-3xl md:mb-8 md:text-6xl text-emerald-700">Colaboration Tool</h1>
+            <h1 className="mb-4 text-3xl md:mb-8 md:text-6xl text-emerald-700">Collaboration Tool</h1>
             <div className="text-right w-full h-full">
             <h4 className="text-base font-bold text-emerald-500">
-                Welcome to use the Colaboration Tool ver.1
+                Welcome to use the Collaboration Tool ver.1
                 </h4>
             </div>
             <form onSubmit={joinRoom} className="flex w-full flex-col gap-4 text-emerald-700">

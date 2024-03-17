@@ -9,7 +9,7 @@ function EditorPage() {
     return (
         <div>
             <div className="w-full text-start py-8 bg-green-600 text-2xl">
-            &nbsp;&nbsp;&nbsp; Colaboration Tool
+            &nbsp;&nbsp;&nbsp; Collaboration Tool
             </div>
             <div className="flex h-screen min-h-screen max-w-full items-center justify-center overflow-x-hidden">
             

@@ -54,6 +54,7 @@ io.on("connection", (socket) => {
 			// If the room does not exist, set the password for the new room
 			console.log(`Creating new room: ${roomId}`);
 			roomPasswords[roomId] = roomPassword;
+			console.log(`User ${username} joined room: ${roomId}`);
 			userSocketMap[socket.id] = { username, roomId, status: ACTIONS.ONLINE };
 			socket.join(roomId);
 			const clients = getAllConnectedClient(roomId);
