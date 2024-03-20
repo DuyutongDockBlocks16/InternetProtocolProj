@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const path = require('path');
 require("dotenv").config();
 const https = require("https");
 const fs = require("fs");
@@ -172,4 +173,17 @@ const upload = multer({ storage: storage });
 app.post('/upload', upload.single('file'), (req, res) => {
     console.log('File has been uploaded');
     res.send({ message: "File uploaded successfully." });
+});
+
+app.get('/file', (req, res) => {
+    const filePath = path.join(__dirname, 'public', 'file');
+    res.download(filePath, (err) => {
+        if (err) {
+            // 发送文件过程中发生错误
+            console.error("error downloading:", err);
+            res.status(500).send({
+                message: "error downloading"
+            });
+        }
+    });
 });

@@ -12,18 +12,23 @@ function Throughput({ downloadUrl, uploadUrl }) {
     const response = await fetch(fileUrl);
     const blob = await response.blob();
     const endTime = new Date().getTime();
+    if (response.ok) {
+      console.log("response OK")
+      const durationInSeconds = (endTime - startTime) / 1000;
+      const bitsLoaded = fileSizeInBytes * 8;
+      const speedBps = (bitsLoaded / durationInSeconds).toFixed(2);
+      const speedKbps = (speedBps / 1024).toFixed(2);
+      const speedMbps = (speedKbps / 1024).toFixed(2);
 
-    const durationInSeconds = (endTime - startTime) / 1000;
-    const bitsLoaded = fileSizeInBytes * 8;
-    const speedBps = (bitsLoaded / durationInSeconds).toFixed(2);
-    const speedKbps = (speedBps / 1024).toFixed(2);
-    const speedMbps = (speedKbps / 1024).toFixed(2);
-
-    setDownloadSpeed(`${speedMbps} Mbps`);
+      setDownloadSpeed(`${speedMbps} Mbps`);
+    }
+    else {
+      console.log("ERROR measuring download throughput")
+    }
   };
 
   const measureUploadSpeed = async () => {
-    const dataSizeInBytes = 5000000; // 使用一个5MB的数据块来模拟文件上传
+    const dataSizeInBytes = 5000000; // 5MB data block
     const data = new Blob([new Uint8Array(dataSizeInBytes)], { type: 'application/octet-stream' });
     const formData = new FormData();
     formData.append('file', data);
@@ -44,8 +49,8 @@ function Throughput({ downloadUrl, uploadUrl }) {
 
       setUploadSpeed(`${speedMbps} Mbps`);
     } else {
-      console.error('上传失败');
-      setUploadSpeed('上传失败');
+      console.error('upload fail');
+      setUploadSpeed('upload fail');
     }
   };
 
@@ -53,12 +58,12 @@ function Throughput({ downloadUrl, uploadUrl }) {
     <div className="flex flex-col items-center justify-center gap-2">
       <div>
         <button className="self-end bg-primary px-8 py-2 text-emerald-700 hover:bg-emerald-800 hover:text-emerald-500 shadow-lg rounded-lg transform hover:scale-105 transition duration-150 ease-in-out"
-          onClick={measureDownloadSpeed}>Download throughput measuring</button>
+          onClick={measureDownloadSpeed}>Download throughput measurement</button>
           {downloadSpeed && <p>Download Speed: {downloadSpeed}</p>}
       </div>
       <div>
         <button className="self-end bg-primary px-8 py-2 text-emerald-700 hover:bg-emerald-800 hover:text-emerald-500 shadow-lg rounded-lg transform hover:scale-105 transition duration-150 ease-in-out"
-          onClick={measureUploadSpeed}>Upload throughput measuring</button>
+          onClick={measureUploadSpeed}>Upload throughput measurement</button>
         {uploadSpeed && <p>Upload Speed: {uploadSpeed}</p>}
       </div>
     </div>
